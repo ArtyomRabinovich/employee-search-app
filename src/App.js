@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import EmployeePage from './pages/EmployeePage';
 import FavoritesPage from './pages/FavoritesPage';
 import { EmployeeProvider } from './EmployeeContext';
+import './index.css';
 
 const App = () => {
     return (
@@ -13,11 +14,13 @@ const App = () => {
             <Router>
                 <div>
                     <Header />
-                    <Routes>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/employee/:email" element={<EmployeePage />} />
-                        <Route path="/favorites" element={<FavoritesPage />} />
-                    </Routes>
+                    <main className="container my-4">
+                        <Routes>
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/employee/:email" element={<EmployeePage />} />
+                            <Route path="/favorites" element={<FavoritesPage />} />
+                        </Routes>
+                    </main>
                     <Footer />
                 </div>
             </Router>

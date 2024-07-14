@@ -9,20 +9,27 @@ const SearchBar = ({ onSearch }) => {
     };
 
     return (
-        <Form className="mb-4">
-            <Row>
-                <Col sm={10}>
-                    <Form.Group controlId="formSearch">
-                        <Form.Control
-                            type="text"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            placeholder="Enter company name..."
-                        />
-                    </Form.Group>
-                </Col>
-                <Col sm={2}>
-                    <Button variant="primary" onClick={handleSearch} block>
+        <Form className="my-4">
+            <Row className="justify-content-center">
+                <Col xs={12} sm={8} md={6} lg={5} className="d-flex p-0">
+                    <Form.Control
+                        type="text"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        placeholder="Enter company name..."
+                        className="bg-secondary text-light"
+                        style={{
+                            borderRadius: '0.25rem',
+                            marginRight: '8px'
+                        }}
+                    />
+                    <Button
+                        variant="dark"
+                        onClick={handleSearch}
+                        style={{
+                            borderRadius: '0.25rem'
+                        }}
+                    >
                         Search
                     </Button>
                 </Col>

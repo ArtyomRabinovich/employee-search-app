@@ -7,13 +7,13 @@ const EmployeeList = () => {
     const { employees } = useContext(EmployeeContext);
 
     if (!employees || employees.length === 0) {
-        return <div>Loading employees...</div>;
+        return <div className="text-light">Loading employees...</div>;
     }
 
     const displayedEmployees = employees.slice(0, 9);
 
     return (
-        <Container>
+        <Container className="my-4">
             <Row>
                 {displayedEmployees.map(employee => (
                     <Col md={4} key={employee.email}>

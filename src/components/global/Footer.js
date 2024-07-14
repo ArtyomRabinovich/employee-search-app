@@ -2,8 +2,8 @@ import React from 'react';
 
 const Footer = () => {
     return (
-        <footer className="bg-light text-center text-lg-start">
-            <div className="text-center p-3">
+        <footer className="bg-dark text-center text-lg-start shadow-sm" style={{ padding: '1rem', marginTop: '2rem' }}>
+            <div className="text-center text-light">
                 © 2024 Final React Project
             </div>
         </footer>
