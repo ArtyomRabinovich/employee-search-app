@@ -4,6 +4,8 @@ import { Button, Container, Row, Col } from 'react-bootstrap';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { EmployeeContext } from '../../EmployeeContext';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 
 const EmployeeDetails = () => {
     const { email } = useParams();
@@ -69,7 +71,15 @@ const EmployeeDetails = () => {
                         />
                         <Marker position={position}>
                             <Popup>
-                                {employee.name.first} {employee.name.last} <br /> {fullAddress}
+                                <img
+                                    src={employee.picture.thumbnail}
+                                    alt={`${employee.name.first} ${employee.name.last}`}
+                                    style={{ objectFit: 'cover', height: '50px', width: '50px', borderRadius: '50%', marginBottom: '0.5rem' }}
+                                />
+                                <div>
+                                    {employee.name.first} {employee.name.last} <br />
+                                    {fullAddress}
+                                </div>
                             </Popup>
                         </Marker>
                     </MapContainer>
