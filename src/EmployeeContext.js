@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 const EmployeeContext = createContext();
-export let FAVS = []; // Global array for storing favorite employees
+export let FAVS = []; 
 
 const EmployeeProvider = ({ children }) => {
     const [employees, setEmployees] = useState([]);
@@ -24,24 +24,24 @@ const EmployeeProvider = ({ children }) => {
     useEffect(() => {
         const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
         setFavorites(savedFavorites);
-        FAVS = savedFavorites; // Initialize global array
+        FAVS = savedFavorites;
     }, []);
 
     useEffect(() => {
         localStorage.setItem('favorites', JSON.stringify(favorites));
-        FAVS = favorites; // Update global array
+        FAVS = favorites;
     }, [favorites]);
 
     const addFavorite = (employee) => {
         const newFavorites = [...favorites, employee];
         setFavorites(newFavorites);
-        FAVS = newFavorites; // Update global array immediately
+        FAVS = newFavorites;
     };
 
     const removeFavorite = (email) => {
         const newFavorites = favorites.filter(fav => fav.email !== email);
         setFavorites(newFavorites);
-        FAVS = newFavorites; // Update global array immediately
+        FAVS = newFavorites;
     };
 
     return (
