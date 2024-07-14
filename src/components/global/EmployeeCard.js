@@ -24,9 +24,9 @@ const EmployeeCard = ({ employee }) => {
             <div style={{ display: 'flex', justifyContent: 'center', overflow: 'hidden', padding: '1rem' }}>
                 <Card.Img
                     variant="top"
-                    src={employee.picture.thumbnail || "https://via.placeholder.com/150"}
+                    src={employee.picture.large || "https://via.placeholder.com/150"}
                     alt={`${employee.name.first} ${employee.name.last}`}
-                    style={{ objectFit: 'cover', height: '100px', width: '100px', borderRadius: '50%' }}
+                    style={{ objectFit: 'cover', height: '150px', width: '150px', borderRadius: '50%' }}
                 />
             </div>
             <Card.Body>

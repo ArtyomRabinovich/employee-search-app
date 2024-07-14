@@ -5,7 +5,16 @@ const SearchBar = ({ onSearch }) => {
     const [query, setQuery] = useState('');
 
     const handleSearch = () => {
-        onSearch(query);
+        if (query.trim()) {
+            onSearch(query);
+        }
+    };
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            handleSearch();
+        }
     };
 
     return (
@@ -16,6 +25,7 @@ const SearchBar = ({ onSearch }) => {
                         type="text"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
+                        onKeyPress={handleKeyPress}
                         placeholder="Enter company name..."
                         className="bg-secondary text-light"
                         style={{
