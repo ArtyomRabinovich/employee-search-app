@@ -44,8 +44,10 @@ const EmployeeProvider = ({ children }) => {
     }, [favorites]);
 
     const addFavorite = (employee) => {
-        const newFavorites = [...favorites, employee];
-        setFavorites(newFavorites);
+        if (!favorites.some(fav => fav.login.username === employee.login.username)) {
+            const newFavorites = [...favorites, employee];
+            setFavorites(newFavorites);
+        }
     };
 
     const removeFavorite = (index) => {

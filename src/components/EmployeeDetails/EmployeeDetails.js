@@ -1,3 +1,4 @@
+// src/components/EmployeeDetails/EmployeeDetails.js
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Container, Row, Col } from 'react-bootstrap';
@@ -16,19 +17,22 @@ const EmployeeDetails = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const index = parseInt(query.get('index'), 10);
-    const { employees, favorites, initialEmployees, company, addFavorite, removeFavorite } = useContext(EmployeeContext);
+    const { employees, favorites, initialEmployees, addFavorite, removeFavorite } = useContext(EmployeeContext);
     const [employee, setEmployee] = useState(null);
     const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
         if (location.pathname.includes('/initial/employee')) {
-            setEmployee(initialEmployees[index]);
+            const initialEmployee = initialEmployees[index];
+            setEmployee(initialEmployee);
+            setIsFavorite(favorites.some(fav => fav.login.username === initialEmployee?.login.username));
         } else if (location.pathname.includes('/favs/employee')) {
             setEmployee(favorites[index]);
             setIsFavorite(true);
         } else if (location.pathname.includes('/employee')) {
-            setEmployee(employees[index]);
-            setIsFavorite(favorites.some(fav => fav.login.username === employees[index]?.login.username));
+            const employee = employees[index];
+            setEmployee(employee);
+            setIsFavorite(favorites.some(fav => fav.login.username === employee?.login.username));
         }
     }, [location.pathname, index, employees, favorites, initialEmployees]);
 
@@ -104,7 +108,7 @@ const EmployeeDetails = () => {
                             </Popup>
                         </Marker>
                     </MapContainer>
-                    <Link to={`/?search=${company}`} className="btn btn-secondary mt-3">Back</Link>
+                    <Link to={`/?search=${employee.company}`} className="btn btn-secondary mt-3">Back</Link>
                 </Col>
             </Row>
         </Container>
