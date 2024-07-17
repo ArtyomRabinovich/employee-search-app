@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
+import { EmployeeContext } from '../../EmployeeContext';
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ resetInput }) => {
     const [query, setQuery] = useState('');
+    const navigate = useNavigate();
+    const { setCompanyAndFetchEmployees } = useContext(EmployeeContext);
 
     const handleSearch = () => {
         if (query.trim()) {
-            onSearch(query);
+            const lowerCaseQuery = query.trim().toLowerCase();
+            setCompanyAndFetchEmployees(lowerCaseQuery);
+            navigate(`/?search=${lowerCaseQuery}`);
+            resetInput(); 
         }
     };
 
@@ -16,6 +23,10 @@ const SearchBar = ({ onSearch }) => {
             handleSearch();
         }
     };
+
+    useEffect(() => {
+        setQuery('');
+    }, [resetInput]);
 
     return (
         <Form className="my-4">

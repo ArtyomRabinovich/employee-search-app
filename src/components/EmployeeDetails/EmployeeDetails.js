@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { EmployeeContext } from '../../EmployeeContext';
@@ -7,29 +7,50 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 
+const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+};
+
 const EmployeeDetails = () => {
-    const { email } = useParams();
-    const { employees, favorites, addFavorite, removeFavorite } = useContext(EmployeeContext);
-    const employee = employees.find(emp => emp.email === email);
+    const query = useQuery();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const index = parseInt(query.get('index'), 10);
+    const { employees, favorites, initialEmployees, company, addFavorite, removeFavorite } = useContext(EmployeeContext);
+    const [employee, setEmployee] = useState(null);
     const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
-        if (employee) {
-            setIsFavorite(favorites.some(fav => fav.email === employee.email));
+        if (location.pathname.includes('/initial/employee')) {
+            setEmployee(initialEmployees[index]);
+        } else if (location.pathname.includes('/favs/employee')) {
+            setEmployee(favorites[index]);
+            setIsFavorite(true);
+        } else if (location.pathname.includes('/employee')) {
+            setEmployee(employees[index]);
+            setIsFavorite(favorites.some(fav => fav.login.username === employees[index]?.login.username));
         }
-    }, [favorites, employee]);
+    }, [location.pathname, index, employees, favorites, initialEmployees]);
+
+    const handleFavoriteClick = () => {
+        if (isFavorite) {
+            const favIndex = favorites.findIndex(fav => fav.login.username === employee.login.username);
+            removeFavorite(favIndex);
+
+            if (location.pathname.includes('/favs/employee')) {
+                navigate('/favs');
+            } else {
+                setIsFavorite(false);
+            }
+        } else {
+            addFavorite(employee);
+            setIsFavorite(true);
+        }
+    };
 
     if (!employee) {
         return <div className="text-light">Employee not found</div>;
     }
-
-    const handleFavoriteClick = () => {
-        if (isFavorite) {
-            removeFavorite(employee.email);
-        } else {
-            addFavorite(employee);
-        }
-    };
 
     const position = [employee.location.coordinates.latitude, employee.location.coordinates.longitude];
     const fullAddress = `${employee.location.street.number} ${employee.location.street.name}, ${employee.location.city}, ${employee.location.state}, ${employee.location.country}`;
@@ -58,9 +79,9 @@ const EmployeeDetails = () => {
                     <p>Cell: {employee.cell}</p>
                     <div className="d-flex justify-content-start mt-3">
                         <Button onClick={handleFavoriteClick} variant={isFavorite ? "danger" : "primary"} style={{ padding: '0.5rem 1rem' }}>
-                            {isFavorite ? '★ Unfavorite' : '☆ Favorite'}
+                            {isFavorite ? 'Unfavorite' : 'Favorite'}
                         </Button>
-                        <Link to="/favorites" className="btn btn-info" style={{ padding: '0.5rem 1rem', marginLeft: '0.5rem' }}>
+                        <Link to="/favs" className="btn btn-info" style={{ padding: '0.5rem 1rem', marginLeft: '0.5rem' }}>
                             Go to Favorites
                         </Link>
                     </div>
@@ -83,7 +104,7 @@ const EmployeeDetails = () => {
                             </Popup>
                         </Marker>
                     </MapContainer>
-                    <Link to="/" className="btn btn-secondary mt-3">Back</Link>
+                    <Link to={`/?search=${company}`} className="btn btn-secondary mt-3">Back</Link>
                 </Col>
             </Row>
         </Container>

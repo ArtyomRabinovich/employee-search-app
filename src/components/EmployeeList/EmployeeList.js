@@ -10,14 +10,12 @@ const EmployeeList = () => {
         return <div className="text-light">Loading employees...</div>;
     }
 
-    const displayedEmployees = employees.slice(0, 9);
-
     return (
         <Container className="my-4">
             <Row>
-                {displayedEmployees.map(employee => (
+                {employees.map((employee, index) => (
                     <Col md={4} key={employee.email}>
-                        <EmployeeCard employee={employee} />
+                        <EmployeeCard employee={employee} index={index} />
                     </Col>
                 ))}
             </Row>

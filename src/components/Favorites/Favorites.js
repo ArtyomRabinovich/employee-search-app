@@ -13,9 +13,9 @@ const Favorites = () => {
                 <p>You have no favorite employees.</p>
             ) : (
                 <Row>
-                    {favorites.map(employee => (
+                    {favorites.map((employee, index) => (
                         <Col md={4} key={employee.email}>
-                            <EmployeeCard employee={employee} />
+                            <EmployeeCard employee={employee} index={index} context="favorites" />
                         </Col>
                     ))}
                 </Row>

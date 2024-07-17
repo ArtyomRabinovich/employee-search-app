@@ -3,21 +3,29 @@ import { Link } from 'react-router-dom';
 import { Card, Button } from 'react-bootstrap';
 import { EmployeeContext } from '../../EmployeeContext';
 
-const EmployeeCard = ({ employee }) => {
-    const { favorites, addFavorite, removeFavorite } = useContext(EmployeeContext);
+const EmployeeCard = ({ employee, index, context }) => {
+    const { company, favorites, addFavorite, removeFavorite } = useContext(EmployeeContext);
     const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
-        setIsFavorite(favorites.some(fav => fav.email === employee.email));
-    }, [favorites, employee.email]);
+        setIsFavorite(favorites.some(fav => fav.login.username === employee.login.username));
+    }, [favorites, employee.login.username]);
 
     const handleFavoriteClick = () => {
         if (isFavorite) {
-            removeFavorite(employee.email);
+            const favIndex = favorites.findIndex(fav => fav.login.username === employee.login.username);
+            removeFavorite(favIndex);
         } else {
             addFavorite(employee);
         }
     };
+
+    let linkPath = `/employee?company=${company}&index=${index}`;
+    if (context === 'initial') {
+        linkPath = `/initial/employee?index=${index}`;
+    } else if (context === 'favorites') {
+        linkPath = `/favs/employee?index=${index}`;
+    }
 
     return (
         <Card className="mb-4 shadow-sm bg-dark text-light" style={{ borderRadius: '0.5rem' }}>
@@ -39,7 +47,7 @@ const EmployeeCard = ({ employee }) => {
                     <Button variant={isFavorite ? "danger" : "primary"} onClick={handleFavoriteClick}>
                         {isFavorite ? '★ Unfavorite' : '☆ Favorite'}
                     </Button>
-                    <Link to={`/employee/${employee.email}`} className="btn btn-secondary">
+                    <Link to={linkPath} className="btn btn-secondary">
                         More Info
                     </Link>
                 </div>

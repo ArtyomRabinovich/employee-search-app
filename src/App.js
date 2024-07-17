@@ -18,8 +18,10 @@ const App = () => {
                     <main className="flex-grow-1 container my-4">
                         <Routes>
                             <Route path="/" element={<HomePage />} />
-                            <Route path="/employee/:email" element={<EmployeePage />} />
-                            <Route path="/favorites" element={<FavoritesPage />} />
+                            <Route path="/employee" element={<EmployeePage />} />
+                            <Route path="/initial/employee" element={<EmployeePage />} />
+                            <Route path="/favs/employee" element={<EmployeePage />} />
+                            <Route path="/favs" element={<FavoritesPage />} />
                         </Routes>
                     </main>
                     <Footer />
