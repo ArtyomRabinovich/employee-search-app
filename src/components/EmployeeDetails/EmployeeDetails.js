@@ -1,4 +1,3 @@
-// src/components/EmployeeDetails/EmployeeDetails.js
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Container, Row, Col } from 'react-bootstrap';
