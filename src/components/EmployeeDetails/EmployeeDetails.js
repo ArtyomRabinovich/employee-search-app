@@ -16,6 +16,7 @@ const EmployeeDetails = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const index = parseInt(query.get('index'), 10);
+    const company = query.get('company');
     const { employees, favorites, initialEmployees, addFavorite, removeFavorite } = useContext(EmployeeContext);
     const [employee, setEmployee] = useState(null);
     const [isFavorite, setIsFavorite] = useState(false);
@@ -57,6 +58,15 @@ const EmployeeDetails = () => {
 
     const position = [employee.location.coordinates.latitude, employee.location.coordinates.longitude];
     const fullAddress = `${employee.location.street.number} ${employee.location.street.name}, ${employee.location.city}, ${employee.location.state}, ${employee.location.country}`;
+
+    let backLink = '/';
+    if (location.pathname.includes('/initial/employee')) {
+        backLink = '/';
+    } else if (location.pathname.includes('/favs/employee')) {
+        backLink = '/favs';
+    } else if (location.pathname.includes('/employee') && company) {
+        backLink = `/?search=${company}`;
+    }
 
     return (
         <Container className="my-4 bg-dark text-light p-4" style={{ borderRadius: '0.5rem' }}>
@@ -107,7 +117,7 @@ const EmployeeDetails = () => {
                             </Popup>
                         </Marker>
                     </MapContainer>
-                    <Link to={`/?search=${employee.company}`} className="btn btn-secondary mt-3">Back</Link>
+                    <Link to={backLink} className="btn btn-secondary mt-3">Back</Link>
                 </Col>
             </Row>
         </Container>
